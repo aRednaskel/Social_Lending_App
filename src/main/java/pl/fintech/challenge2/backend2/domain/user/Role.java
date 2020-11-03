@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Data
@@ -16,6 +17,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue
     private Long id;
 
+    @Pattern(regexp="^(BORROWER|LENDER)$",message="invalid code")
     private String name;
 
     public Role(String name) {

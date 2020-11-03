@@ -1,9 +1,11 @@
 package pl.fintech.challenge2.backend2.controller.dto;
 
 import lombok.Data;
+import pl.fintech.challenge2.backend2.domain.user.Role;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 public class RegistrationDTO {
@@ -18,4 +20,6 @@ public class RegistrationDTO {
     private String surname;
 
     private String phone;
+
+    private List<Role> roles;
 }

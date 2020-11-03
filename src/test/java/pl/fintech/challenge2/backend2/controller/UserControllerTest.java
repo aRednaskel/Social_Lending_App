@@ -29,7 +29,7 @@ public class UserControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    public void shouldStatusBe201() throws Exception {
+    public void shouldStatusBe201WhenBasicRegistration() throws Exception {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         registrationDTO.setEmail("email@email.com");
         registrationDTO.setPassword("wisnia");
