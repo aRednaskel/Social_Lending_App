@@ -30,7 +30,7 @@ public class UserController {
     @PreAuthorize("permitAll()")
     @PostMapping("/register")
     public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO userDTO){
-        log.info("POST /register, registering user:{}", userDTO);
+        log.info("POST /api/users/register, registering user:{}", userDTO);
 
         return ResponseEntity.status(201).body(userService.saveUser(userMapper.mapRegistrationDTOToObject(userDTO)));
     }
