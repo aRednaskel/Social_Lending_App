@@ -16,16 +16,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@ActiveProfiles("LOCAL") //z tym profilem uruchomi mi się test ("LOCAL")
-@AutoConfigureMockMvc //moge uruchamiac metody http do moich metod kontrolera
-    //symuluje klienta
+@ActiveProfiles("LOCAL")
+@AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-// żeby moja klasa nie przechowywała stanu przed każdym testem (czyści stan)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-  //automatycznie konfiguruje baze danych
 public class UserControllerTest {
 
-    //
     @Autowired
     MockMvc mockMvc;
 
@@ -45,4 +41,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email").exists())
                 .andExpect(jsonPath("$.email").value("email@email.com"));
     }
+
+    //todo: test logging in
+
+    //todo: test logging out
 }

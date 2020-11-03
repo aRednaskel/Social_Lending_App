@@ -8,7 +8,7 @@ import pl.fintech.challenge2.backend2.domain.user.User;
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
-    public User mapRegistrationDTOToObject(RegistrationDTO registrationDTO){
+    public User mapRegistrationDTOToUser(RegistrationDTO registrationDTO){
         return User.builder()
                 .email(registrationDTO.getEmail())
                 .password(registrationDTO.getPassword())

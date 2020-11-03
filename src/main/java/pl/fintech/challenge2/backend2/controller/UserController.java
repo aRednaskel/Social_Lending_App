@@ -32,6 +32,6 @@ public class UserController {
     public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO userDTO){
         log.info("POST /api/users/register, registering user:{}", userDTO);
 
-        return ResponseEntity.status(201).body(userService.saveUser(userMapper.mapRegistrationDTOToObject(userDTO)));
+        return ResponseEntity.status(201).body(userService.saveUser(userMapper.mapRegistrationDTOToUser(userDTO)));
     }
 }
