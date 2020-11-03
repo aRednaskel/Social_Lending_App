@@ -20,9 +20,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
-    //todo: powinienem takie rzeczy obslugiwać za pomocą aspektów, na razie zrob happy path
-//    private final MapValidationErrorService mapValidationErrorService;
-
     private final UserService userService;
 
     private final UserMapper userMapper;
