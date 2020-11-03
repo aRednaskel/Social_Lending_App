@@ -18,8 +18,8 @@ public class SecurityExpressions {
     @Transactional
     public boolean hasPersonId(Authentication authentication, Long personId) {
         String username = String.valueOf(authentication.getPrincipal());
-        if (employeeUserRepository.findByUsername(username).isPresent()){
-            Optional<User> userOptional = employeeUserRepository.findByUsername(username);
+        if (employeeUserRepository.findByEmail(username).isPresent()){
+            Optional<User> userOptional = employeeUserRepository.findByEmail(username);
             Long userPersonId = null;
             if(userOptional.isPresent()){
                 userPersonId = userOptional.get().getId();

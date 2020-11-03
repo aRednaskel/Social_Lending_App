@@ -1,5 +1,6 @@
 package pl.fintech.challenge2.backend2.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,12 +25,24 @@ public class User implements UserDetails {
 
     @Email(message = "Wprowadź poprawny email")
     @Column(unique = true)
-    private String username;
+    private String email;
 
+    @JsonIgnore
     private String password;
+
+    private String name;
+
+    private String surname;
+
+    private String phone;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
