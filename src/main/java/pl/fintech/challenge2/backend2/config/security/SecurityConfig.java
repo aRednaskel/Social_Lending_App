@@ -19,7 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //to allow h2 console page
         httpSecurity.headers().frameOptions().disable();
-//        httpSecurity.formLogin().loginPage("/api/users/login").permitAll().and()
-//                .logout().logoutUrl("/api/users/logout").permitAll();
+        httpSecurity.authorizeRequests().and()
+                .formLogin().loginPage("/api/users/login").permitAll().and()
+                .logout().logoutUrl("/api/users/logout").permitAll();
     }
 }
