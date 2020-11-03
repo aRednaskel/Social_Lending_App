@@ -20,7 +20,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //to allow h2 console page
         httpSecurity.headers().frameOptions().disable();
         httpSecurity.authorizeRequests().and()
-                .formLogin().loginPage("/api/users/login").permitAll().and()
-                .logout().logoutUrl("/api/users/logout").permitAll();
+                .formLogin().loginPage("/api/users/login").permitAll();
     }
 }
