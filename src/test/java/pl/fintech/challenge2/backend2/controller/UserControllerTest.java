@@ -11,6 +11,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.fintech.challenge2.backend2.controller.dto.RegistrationDTO;
+import pl.fintech.challenge2.backend2.domain.user.Role;
+
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,18 +34,53 @@ public class UserControllerTest {
     @Test
     public void shouldStatusBe201WhenBasicRegistration() throws Exception {
         RegistrationDTO registrationDTO = new RegistrationDTO();
-        registrationDTO.setEmail("email@email.com");
+        registrationDTO.setEmail("people.defender@email.com");
         registrationDTO.setPassword("wisnia");
         mockMvc.perform(post("/api/users/register")
                 .content(objectMapper.writeValueAsString(registrationDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(201))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.email").exists())
-                .andExpect(jsonPath("$.email").value("email@email.com"));
+                .andExpect(jsonPath("$.email").value("people.defender@email.com"))
+                .andExpect(jsonPath("$.password").doesNotExist());
     }
 
-    //todo: test logging in
+    //todo: make them pass
+//    @Test
+//    public void shouldStatusBe201WhenAllFieldsFilled() throws Exception {
+//        RegistrationDTO registrationDTO = new RegistrationDTO();
+//        registrationDTO.setEmail("bestprogrammer@email.com");
+//        registrationDTO.setPassword("wisnia");
+//        registrationDTO.setName("El-Me-dżel");
+//        registrationDTO.setSurname("Cień");
+//        registrationDTO.setPhone("123456789");
+//        registrationDTO.setRoles(Arrays.asList(new Role("BORROWER")));
+//        mockMvc.perform(post("/api/users/register")
+//                .content(objectMapper.writeValueAsString(registrationDTO))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().is(201))
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(jsonPath("$.email").value("bestprogrammer@email.com"))
+//                .andExpect(jsonPath("$.password").doesNotExist())
+//                .andExpect(jsonPath("$.name").value("El-Me-dżel"))
+//                .andExpect(jsonPath("$.surname").value("Cień"))
+//                .andExpect(jsonPath("$.phone").value("123456789"))
+//                .andExpect(jsonPath("$.roles").value("BORROWER"));
+//    }
 
-    //todo: test logging out
+    @Test
+    public void shouldStatusBe200WhenLoggingIn() throws Exception {
+        RegistrationDTO registrationDTO = new RegistrationDTO();
+        registrationDTO.setEmail("bestprogrammer@email.com");
+        registrationDTO.setPassword("wisnia");
+        mockMvc.perform(post("/api/users/register")
+                .content(objectMapper.writeValueAsString(registrationDTO))
+                .contentType(MediaType.APPLICATION_JSON));
+        mockMvc.perform(post("/login")
+                .param("username", "bestprogrammer@email.com")
+                .param("password", "wisnia")
+//                .content("{\"username\":\"bestprogrammer@email.com\",\"password\":\"wisnia\"}")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().is(200));
+    }
 }
