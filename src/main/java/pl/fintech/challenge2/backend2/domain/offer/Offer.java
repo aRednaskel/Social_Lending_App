@@ -10,7 +10,6 @@ import pl.fintech.challenge2.backend2.domain.user.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @Builder
@@ -27,8 +26,8 @@ public class Offer {
     @NotNull
     private User lender;
 
-    @OneToMany
-    private List<Inquiry> inquiries;
+    @ManyToOne
+    private Inquiry inquiry;
 
     private BigDecimal loanAmount;
 
