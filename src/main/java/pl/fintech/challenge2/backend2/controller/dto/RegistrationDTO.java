@@ -5,7 +5,7 @@ import pl.fintech.challenge2.backend2.domain.user.Role;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class RegistrationDTO {
@@ -21,5 +21,5 @@ public class RegistrationDTO {
 
     private String phone;
 
-    private List<Role> roles;
+    private Set<Role> roles;
 }

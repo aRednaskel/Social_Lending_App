@@ -15,6 +15,7 @@ public class UserMapper {
                 .name(registrationDTO.getName())
                 .surname(registrationDTO.getSurname())
                 .phone(registrationDTO.getPhone())
+                .roles(registrationDTO.getRoles())
                 .build();
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -36,8 +36,11 @@ public class User implements UserDetails {
 
     private String phone;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     @JsonIgnore
     @Override

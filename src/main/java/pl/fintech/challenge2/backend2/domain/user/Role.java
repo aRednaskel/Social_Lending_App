@@ -4,10 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 @Entity
 @Data
@@ -28,4 +27,7 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
+
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private Set<User> users;
 }
