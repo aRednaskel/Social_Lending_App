@@ -7,6 +7,6 @@ public interface InquiryService {
 
     void create(Inquiry inquiry);
     Inquiry findById(Long id);
-    List<Inquiry> findAll(Integer minLoanDuration, Integer maxLoanDuration,
-                        BigDecimal minAmount, BigDecimal maxAmount);
+    List<Inquiry> findAllByLoanDurationAndAmount(Integer minLoanDuration, Integer maxLoanDuration,
+                                                 BigDecimal minAmount, BigDecimal maxAmount);
 }

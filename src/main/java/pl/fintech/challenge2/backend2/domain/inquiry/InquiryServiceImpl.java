@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InquiryServiceImpl implements InquiryService {
 
-    private InquiryRepository inquiryRepository;
+    private final InquiryRepository inquiryRepository;
 
     @Override
     public void create(Inquiry inquiry) {
@@ -25,7 +25,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public List<Inquiry> findAll(Integer minLoanDuration, Integer maxLoanDuration, BigDecimal minAmount, BigDecimal maxAmount) {
+    public List<Inquiry> findAllByLoanDurationAndAmount(Integer minLoanDuration, Integer maxLoanDuration, BigDecimal minAmount, BigDecimal maxAmount) {
         List<Inquiry> inquiries = inquiryRepository.findAll();
         return inquiries.stream()
                 .filter(inquiry ->

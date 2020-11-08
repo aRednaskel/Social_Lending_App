@@ -3,21 +3,18 @@ package pl.fintech.challenge2.backend2.controller.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.fintech.challenge2.backend2.controller.dto.OfferDTO;
-import pl.fintech.challenge2.backend2.domain.inquiry.InquiryService;
+import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.domain.offer.Offer;
-import pl.fintech.challenge2.backend2.domain.user.UserService;
+import pl.fintech.challenge2.backend2.domain.user.User;
 
 @Component
 @RequiredArgsConstructor
 public class OfferMapper {
 
-    private final UserService userService;
-    private final InquiryService inquiryService;
-
-    public Offer mapInquiryDTOToInquiry(OfferDTO offerDTO) {
+    public Offer mapOfferDTOToOffer(OfferDTO offerDTO, User user, Inquiry inquiry) {
         return Offer.builder()
-                .lender(userService.findById(offerDTO.getLenderId()))
-                .inquiry(inquiryService.findById(offerDTO.getInquiryId()))
+                .lender(user)
+                .inquiry(inquiry)
                 .loanAmount(offerDTO.getProposedAmount())
                 .annualInterestRate(offerDTO.getAnnualInterestRate())
                 .paymentFrequency(offerDTO.getPaymentFrequency())
