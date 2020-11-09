@@ -18,7 +18,7 @@ import java.util.List;
 public class InquiryController {
 
     private final InquiryService inquiryService;
-    private final InquiryMapper inquiryMapper;
+    private final InquiryMapper inquiryMapper = new InquiryMapper();
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

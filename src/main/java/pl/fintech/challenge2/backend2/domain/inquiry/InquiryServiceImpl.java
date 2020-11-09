@@ -3,6 +3,7 @@ package pl.fintech.challenge2.backend2.domain.inquiry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -15,6 +16,7 @@ public class InquiryServiceImpl implements InquiryService {
     private final InquiryRepository inquiryRepository;
 
     @Override
+    @Transactional
     public void create(Inquiry inquiry) {
         inquiryRepository.save(inquiry);
     }
