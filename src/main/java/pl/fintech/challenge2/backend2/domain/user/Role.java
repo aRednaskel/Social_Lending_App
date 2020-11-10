@@ -1,5 +1,6 @@
 package pl.fintech.challenge2.backend2.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +28,4 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
-
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private Set<User> users;
 }
