@@ -4,10 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -16,8 +21,13 @@ public class UserServiceImpl implements UserService{
         try{
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
+            Set<Role> roles = new HashSet<>();
+            for(Role role : user.getRoles()){
+                roles.add(roleRepository.findByName(role.getName()).orElseGet(()->roleRepository
+                        .save(new Role(role.getName()))));
+            }
+            user.setRoles(roles);
             return userRepository.save(user);
-
         }catch (Exception e){
             throw new UsernameAlreadyExistsException("Username '"+user.getUsername()+"' already exists");
         }
