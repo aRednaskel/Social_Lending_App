@@ -1,7 +1,9 @@
 package pl.fintech.challenge2.backend2.domain.inquiry;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -23,21 +25,18 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public Inquiry findById(Long id) {
-        return null;
+        return inquiryRepository.findById(id)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public List<Inquiry> findAllByLoanDurationAndAmount(Integer minLoanDuration, Integer maxLoanDuration, BigDecimal minAmount, BigDecimal maxAmount) {
-        List<Inquiry> inquiries = inquiryRepository.findAll();
-        return inquiries.stream()
-                .filter(inquiry ->
-                           minLoanDuration < inquiry.getLoanDuration()
-                        && inquiry.getLoanDuration() < maxLoanDuration
-                        && minAmount.compareTo(inquiry.getLoanAmount()) <0
-                        && inquiry.getLoanAmount().compareTo(maxAmount) > 0)
-                .sorted(Comparator
-                        .comparing(Inquiry::getLoanAmount)
-                        .thenComparing(Inquiry::getLoanDuration))
+        List<Inquiry> inquiries = inquiryRepository
+                .findByLoanDurationBetweenAndLoanAmountBetween(minLoanDuration, maxLoanDuration, minAmount, maxAmount);
+        inquiries = inquiries.stream().sorted(Comparator
+                .comparing(Inquiry::getLoanAmount)
+                .thenComparing(Inquiry::getLoanDuration))
                 .collect(Collectors.toList());
+        return inquiries;
     }
 }

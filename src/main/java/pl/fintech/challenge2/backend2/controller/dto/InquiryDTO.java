@@ -1,16 +1,14 @@
 package pl.fintech.challenge2.backend2.controller.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
+@Value
 public class InquiryDTO {
 
-    private BigDecimal loanAmount;
-    private Integer loanDuration;
-    private LocalDate submissionDeadline;
+    BigDecimal loanAmount;
+    Integer loanDuration;
+    LocalDate submissionDeadline;
 }
