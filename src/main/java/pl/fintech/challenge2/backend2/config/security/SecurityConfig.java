@@ -34,5 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //to allow h2 console page
         httpSecurity.headers().frameOptions().disable();
+
     }
 }
