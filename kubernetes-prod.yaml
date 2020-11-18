@@ -26,6 +26,9 @@ spec:
         - name: backend2
           image: carpo-team-docker-registry.fintechchallenge.pl/carpo-team/backend2:latest
           imagePullPolicy: Always
+          env:
+            - name: spring.profiles.active
+              value: production
           ports:
             - name: api
               containerPort: 8080
