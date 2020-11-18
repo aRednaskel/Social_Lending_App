@@ -1,6 +1,5 @@
 package pl.fintech.challenge2.backend2.controller.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
 import pl.fintech.challenge2.backend2.domain.offer.PaymentFrequency;
 
