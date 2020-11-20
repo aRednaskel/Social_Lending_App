@@ -7,6 +7,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,5 +39,10 @@ public class InquiryServiceImpl implements InquiryService {
                 .thenComparing(Inquiry::getLoanDuration))
                 .collect(Collectors.toList());
         return inquiries;
+    }
+
+    @Override
+    public List<Inquiry> findBySubmissionDeadLine(LocalDate submissionDeadline) {
+        return inquiryRepository.findBySubmissionDeadline(submissionDeadline);
     }
 }

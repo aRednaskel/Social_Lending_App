@@ -1,5 +1,6 @@
 package pl.fintech.challenge2.backend2.domain.offer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +35,7 @@ public class Offer {
     @Enumerated(value = EnumType.STRING)
     private PaymentFrequency paymentFrequency;
 
-
+    @JsonIgnore
+    private OfferStatus offerStatus;
 
 }
