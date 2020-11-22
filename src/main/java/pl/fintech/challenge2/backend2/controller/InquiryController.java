@@ -32,6 +32,6 @@ public class InquiryController {
                                       @RequestParam(required = false, defaultValue = "420") Integer maxLoanDuration,
                                       @RequestParam(required = false, defaultValue = "0") BigDecimal minAmount,
                                       @RequestParam(required = false, defaultValue = "9999999999999999999") BigDecimal maxAmount) {
-        return inquiryService.findAllByLoanDurationAndAmount(minLoanDuration, maxLoanDuration, minAmount, maxAmount);
+        return inquiryService.findAllByAmountAndLoanDuration(minLoanDuration, maxLoanDuration, minAmount, maxAmount);
     }
 }

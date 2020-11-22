@@ -2,7 +2,6 @@ package pl.fintech.challenge2.backend2.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -56,7 +55,7 @@ class InquiryControllerTest extends Specification {
 
     def "GET "() {
         given:
-        when(inquiryService.findAllByLoanDurationAndAmount(4,6,9,11))
+        when(inquiryService.findAllByAmountAndLoanDuration(4,6,9,11))
                 .thenReturn(List.of(createInquiry()))
         expect:
         def result = mvc.perform(get(new URI("/api/inquiries"))

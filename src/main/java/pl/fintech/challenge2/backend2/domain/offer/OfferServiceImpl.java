@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +21,8 @@ class OfferServiceImpl implements OfferService {
     @Override
     @Transactional
     public Offer create(Offer offer) {
-        if (offer != null
-//                && offer.getLender().ge TODO merge with Michal's account and check if lender has money
-        )
+        if (offer == null)
+            throw new HttpClientErrorException(HttpStatus.NO_CONTENT);
         offer.setOfferStatus(OfferStatus.CREATED);
         return offerRepository.save(offer);
     }
