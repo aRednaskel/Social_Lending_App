@@ -37,4 +37,12 @@ public class UserController {
 
         return ResponseEntity.status(200).body(userService.findById(id));
     }
+
+    @PreAuthorize("permitAll()")
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        log.info("DELETE /api/users/{}", id);
+
+        userService.removeById(id);
+    }
 }
