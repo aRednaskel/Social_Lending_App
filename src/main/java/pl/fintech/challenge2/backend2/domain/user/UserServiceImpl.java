@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
+
+    @Override
+    public void removeById(Long id) {
+        userRepository.deleteById(id);
+    }
 }
