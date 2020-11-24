@@ -46,7 +46,7 @@ pipeline {
             }
         }
         stage('Docker push') {
-            when { branch 'configure-postgres-database' }
+            when { branch 'database_2' }
             agent {
                 docker {
                     image 'fintech/base-agent'
@@ -64,7 +64,7 @@ pipeline {
             }
         }
         stage('Deploy Sit') {
-            when { branch 'configure-postgres-database' }
+            when { branch 'database_2' }
             agent {
                 docker {
                     image 'fintech/kubernetes-agent'
