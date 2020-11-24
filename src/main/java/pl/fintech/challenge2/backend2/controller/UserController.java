@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
 import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
 import pl.fintech.challenge2.backend2.controller.dto.RegistrationDTO;
 import pl.fintech.challenge2.backend2.controller.mapper.UserMapper;
@@ -49,10 +50,11 @@ public class UserController {
 
     @PreAuthorize("permitAll()")
     @PutMapping("/{id}/change-email")
-    public void changeUserEmail(@PathVariable Long id) {
+    public ResponseEntity<User> changeUserEmail(@PathVariable Long id,
+                                @RequestBody ChangeEmailDTO changeEmailDTO) {
         log.info("PUT /api/users/{}/change-email", id);
 
-        userService.removeById(id);
+        return ResponseEntity.status(200).body(userService.changeEmail(id, changeEmailDTO));
     }
 
     @PreAuthorize("permitAll()")
