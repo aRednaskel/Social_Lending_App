@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -43,5 +44,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
+        User user = findById(id);
+        if(bCryptPasswordEncoder.encode(changePasswordDTO.getOldPassword()).equals(user.getPassword())){
+            user.setPassword(changePasswordDTO.getNewPassword());
+        }
+        return userRepository.save(user);
     }
 }
