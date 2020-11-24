@@ -8,6 +8,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
 import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User changeEmail(Long id, ChangeEmailDTO changeEmailDTO) {
         User user = findById(id);
-        if(bCryptPasswordEncoder.encode(changeEmailDTO.getPassword()).equals(user.getPassword())){
+        if(bCryptPasswordEncoder.matches(changeEmailDTO.getPassword(), user.getPassword())){
             user.setEmail(changeEmailDTO.getNewEmail());
         }
         return userRepository.save(user);
@@ -59,8 +60,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
         User user = findById(id);
-        if(bCryptPasswordEncoder.encode(changePasswordDTO.getOldPassword()).equals(user.getPassword())){
-            user.setPassword(changePasswordDTO.getNewPassword());
+        if(bCryptPasswordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())){
+            user.setPassword(bCryptPasswordEncoder.encode(changePasswordDTO.getNewPassword()));
         }
         return userRepository.save(user);
     }
