@@ -1,11 +1,11 @@
 package pl.fintech.challenge2.backend2.domain.bank;
 
-import lombok.Value;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Value
+@Data
 public class Transaction {
 
     Integer id;

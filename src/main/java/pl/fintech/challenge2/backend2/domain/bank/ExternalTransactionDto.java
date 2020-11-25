@@ -7,5 +7,5 @@ import java.math.BigDecimal;
 @Value
 public class ExternalTransactionDto {
     String accountNumber;
-    BigDecimal number;
+    BigDecimal amount;
 }

@@ -50,6 +50,7 @@ public class BankAppClientImpl implements BankAppClient{
         ResponseEntity<String> getData = restTemplate.exchange(
                 "https://hltechbank.thebe-team.sit.fintechchallenge.pl/transactions/",
                 HttpMethod.POST, request, String.class);
+        getData.getHeaders();
     }
 
     @Override
