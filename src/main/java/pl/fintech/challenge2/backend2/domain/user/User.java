@@ -36,6 +36,8 @@ public class User implements UserDetails {
 
     private String phone;
 
+    private String accountNumber;
+
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

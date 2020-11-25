@@ -5,8 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-
-import java.util.Optional;
+import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +19,8 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final BankAppClient bankAppClient;
+
     @Override
     public User saveUser(User user) {
         try{
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService {
                         .save(new Role(role.getName()))));
             }
             user.setRoles(roles);
+            user.setAccountNumber(bankAppClient
+                    .createAccount(user.getEmail()));
             return userRepository.save(user);
         }catch (Exception e){
             throw new UsernameAlreadyExistsException("Username '"+user.getUsername()+"' already exists");

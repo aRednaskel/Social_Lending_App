@@ -1,5 +1,6 @@
 package pl.fintech.challenge2.backend2.domain.inquiry
 
+
 import org.springframework.web.client.HttpClientErrorException
 import spock.lang.Specification
 
