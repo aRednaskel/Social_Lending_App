@@ -1,5 +1,6 @@
 package pl.fintech.challenge2.backend2.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
+import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
 import pl.fintech.challenge2.backend2.controller.dto.RegistrationDTO;
 import pl.fintech.challenge2.backend2.domain.user.Role;
 
@@ -19,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -89,5 +94,35 @@ public class UserControllerTest {
                 .param("password", "wisnia")
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().is(200));
+    }
+
+    @Test
+    public void shouldChangeEmail() throws Exception {
+        RegistrationDTO registrationDTO = new RegistrationDTO();
+        registrationDTO.setEmail("bestprogrammer@email.com");
+        registrationDTO.setPassword("wisnia");
+        registrationDTO.setName("El-Me-dżel");
+        registrationDTO.setSurname("Cień");
+        registrationDTO.setPhone("123456789");
+        registrationDTO.setRoles(new HashSet<>(Collections.singletonList(new Role("BORROWER"))));
+        MvcResult result = mockMvc.perform(post("/api/users/register")
+                .content(objectMapper.writeValueAsString(registrationDTO))
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        String content = result.getResponse().getContentAsString();
+        JsonNode jsonNode = objectMapper.readTree(content);
+
+        ChangeEmailDTO changeEmailDTO = new ChangeEmailDTO();
+        changeEmailDTO.setPassword("wisnia");
+        changeEmailDTO.setNewEmail("wisnia2@o2.pl");
+        mockMvc.perform(put("/api/users/" + jsonNode.get("id").toString() + "/change-email")
+                .content(objectMapper.writeValueAsString(changeEmailDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.email").value("wisnia2@o2.pl"))
+                .andExpect(jsonPath("$.password").doesNotExist())
+                .andExpect(jsonPath("$.name").value("El-Me-dżel"))
+                .andExpect(jsonPath("$.surname").value("Cień"))
+                .andExpect(jsonPath("$.phone").value("123456789"));
     }
 }
