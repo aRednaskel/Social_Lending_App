@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
+import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
 import pl.fintech.challenge2.backend2.controller.dto.RegistrationDTO;
 import pl.fintech.challenge2.backend2.controller.mapper.UserMapper;
+import pl.fintech.challenge2.backend2.domain.user.User;
 import pl.fintech.challenge2.backend2.domain.user.UserService;
 
 import javax.validation.Valid;
@@ -26,9 +26,43 @@ public class UserController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO userDTO){
+    public ResponseEntity<User> registerUser(@Valid @RequestBody RegistrationDTO userDTO){
         log.info("POST /api/users/register, registering user:{}", userDTO);
 
         return ResponseEntity.status(201).body(userService.saveUser(userMapper.mapRegistrationDTOToUser(userDTO)));
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/{id}")
+    public ResponseEntity getUsersData(@PathVariable Long id) {
+        log.info("GET /api/users/{}", id);
+
+        return ResponseEntity.status(200).body(userService.findById(id));
+    }
+
+    @PreAuthorize("permitAll()")
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        log.info("DELETE /api/users/{}", id);
+
+        userService.removeById(id);
+    }
+
+    @PreAuthorize("permitAll()")
+    @PutMapping("/{id}/change-email")
+    public ResponseEntity<User> changeUserEmail(@PathVariable Long id,
+                                @RequestBody ChangeEmailDTO changeEmailDTO) {
+        log.info("PUT /api/users/{}/change-email", id);
+
+        return ResponseEntity.status(200).body(userService.changeEmail(id, changeEmailDTO));
+    }
+
+    @PreAuthorize("permitAll()")
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<User> changeUserPassword(@PathVariable Long id,
+                                                   @RequestBody ChangePasswordDTO changePasswordDTO) {
+        log.info("PUT /api/users/{}/change-password", id);
+
+        return ResponseEntity.status(200).body(userService.changePassword(id, changePasswordDTO));
     }
 }
