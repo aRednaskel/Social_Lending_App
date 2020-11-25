@@ -125,4 +125,34 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.surname").value("Cień"))
                 .andExpect(jsonPath("$.phone").value("123456789"));
     }
+
+    @Test
+    public void shouldChangePassword() throws Exception {
+        RegistrationDTO registrationDTO = new RegistrationDTO();
+        registrationDTO.setEmail("bestprogrammer@email.com");
+        registrationDTO.setPassword("wisnia");
+        registrationDTO.setName("El-Me-dżel");
+        registrationDTO.setSurname("Cień");
+        registrationDTO.setPhone("123456789");
+        registrationDTO.setRoles(new HashSet<>(Collections.singletonList(new Role("BORROWER"))));
+        MvcResult result = mockMvc.perform(post("/api/users/register")
+                .content(objectMapper.writeValueAsString(registrationDTO))
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        String content = result.getResponse().getContentAsString();
+        JsonNode jsonNode = objectMapper.readTree(content);
+
+        ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
+        changePasswordDTO.setOldPassword("wisnia");
+        changePasswordDTO.setNewPassword("wisnia2");
+        mockMvc.perform(put("/api/users/" + jsonNode.get("id").toString() + "/change-password")
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.email").value("bestprogrammer@email.com"))
+                .andExpect(jsonPath("$.password").doesNotExist())
+                .andExpect(jsonPath("$.name").value("El-Me-dżel"))
+                .andExpect(jsonPath("$.surname").value("Cień"))
+                .andExpect(jsonPath("$.phone").value("123456789"));
+    }
 }
