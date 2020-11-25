@@ -30,7 +30,7 @@ pipeline {
             }
         }
         stage('Sonar') {
-            when { branch 'configure-postgres-database' }
+            when { branch 'master' }
             agent {
                 docker {
                     image 'fintech/sonar-agent'
@@ -46,7 +46,7 @@ pipeline {
             }
         }
         stage('Docker push') {
-            when { branch 'database_2' }
+            when { branch 'master' }
             agent {
                 docker {
                     image 'fintech/base-agent'
@@ -64,7 +64,7 @@ pipeline {
             }
         }
         stage('Deploy Sit') {
-            when { branch 'database_2' }
+            when { branch 'master' }
             agent {
                 docker {
                     image 'fintech/kubernetes-agent'
@@ -82,7 +82,7 @@ pipeline {
             }
         }
         stage('Deploy Uat') {
-            when { branch 'configure-postgres-database' }
+            when { branch 'master' }
             agent {
                 docker {
                     image 'fintech/kubernetes-agent'
