@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import pl.fintech.challenge2.backend2.domain.Status;
 import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 
@@ -30,7 +31,7 @@ class OfferServiceImpl implements OfferService {
                 .getAccountBalance();
         if (balance.compareTo(offer.getLoanAmount()) < 0)
             throw new InsuficientMoneyException("User with id " + offer.getLender().getId() + "does not have enough money to create an offer");
-        offer.setOfferStatus(OfferStatus.CREATED);
+        offer.setStatus(Status.CREATED);
         return offerRepository.save(offer);
     }
 
@@ -53,12 +54,18 @@ class OfferServiceImpl implements OfferService {
     private List<Offer> getBestOffersThatWillCoverInquiryAmountAndChangeStatusForRejectedOffers(BigDecimal amount, List<Offer> offers) {
         List<Offer> returnOffers = new ArrayList<>();
         for (Offer offer : offers) {
-            if (amount.compareTo(BigDecimal.ZERO) > 0) {
+            if (amount.compareTo(offer.getLoanAmount()) >= 0) {
                 amount = amount.subtract(offer.getLoanAmount());
+                offer.setLoanAmountGiven(offer.getLoanAmount());
                 returnOffers.add(offer);
-                offer.setOfferStatus(OfferStatus.PENDING);
+                offer.setStatus(Status.PENDING);
+            } else if (amount.compareTo(BigDecimal.ZERO) > 0) {
+                offer.setLoanAmountGiven(amount);
+                amount = amount.subtract(offer.getLoanAmount());
+                offer.setStatus(Status.PENDING);
+                returnOffers.add(offer);
             } else {
-                offer.setOfferStatus(OfferStatus.REJECTED);
+                offer.setStatus(Status.REJECTED);
             }
         }
         return returnOffers;
