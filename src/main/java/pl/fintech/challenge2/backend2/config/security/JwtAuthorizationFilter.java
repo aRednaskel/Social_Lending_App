@@ -26,7 +26,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = request.getHeader("Authorization-Backend");
+        String token = request.getHeader("X-Auth");
         if(token == null || !token.startsWith("Bearer")){
             chain.doFilter(request, response);
             return;
