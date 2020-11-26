@@ -40,6 +40,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, "SECRET")
                 .compact();
-        response.setHeader("Authorization", "Bearer " + token);
+        response.setHeader("X-Auth", "Bearer " + token);
     }
 }
