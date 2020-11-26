@@ -89,7 +89,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/api/users/register")
                 .content(objectMapper.writeValueAsString(registrationDTO))
                 .contentType(MediaType.APPLICATION_JSON));
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/api/users/login")
                 .param("username", "bestprogrammer@email.com")
                 .param("password", "wisnia")
                 .contentType(MediaType.MULTIPART_FORM_DATA))

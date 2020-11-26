@@ -22,6 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,9 +44,9 @@ public class User implements UserDetails {
     private String accountNumber;
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
-//    @JoinTable(name = "user_role",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     @ManyToMany(targetEntity = Inquiry.class, fetch = FetchType.LAZY)
