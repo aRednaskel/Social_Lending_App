@@ -7,12 +7,13 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
-import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import pl.fintech.challenge2.backend2.controller.dto.InquiryDTO
 import pl.fintech.challenge2.backend2.controller.mapper.InquiryMapper
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry
 import pl.fintech.challenge2.backend2.domain.inquiry.InquiryService
+import pl.fintech.challenge2.backend2.domain.inquiry.InquiryServiceImpl
 import spock.lang.Specification
 import spock.mock.DetachedMockFactory
 
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@ActiveProfiles("LOCAL")
+@ContextConfiguration(classes = [InquiryService.class, InquiryServiceImpl.class])
 @WebMvcTest(controllers = [InquiryController.class])
 class InquiryControllerTest extends Specification {
 
@@ -41,7 +42,7 @@ class InquiryControllerTest extends Specification {
 
     def "POST / should create an Inquiry and return status created"() {
         given:
-        def inquiryDTO = new InquiryDTO(BigDecimal.TEN, 5, null)
+        def inquiryDTO = new InquiryDTO(BigDecimal.TEN, 5, null, null)
         def inquiry = createInquiry()
         when(inquiryMapper.mapInquiryDTOToInquiry(inquiryDTO)).thenReturn(inquiry)
 

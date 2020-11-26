@@ -8,7 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.fintech.challenge2.backend2.domain.user.UserRepository;
+import pl.fintech.challenge2.backend2.domain.user.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
         setAuthenticationManager(authenticationManager);
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Claims claims = new DefaultClaims();
         claims.put("authorities", authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority)
         .collect(Collectors.joining(",")));
-        claims.put("user-id", userRepository.findByEmail(authResult.getName()).get().getId());
+        claims.put("user-id", userService.findByEmail(authResult.getName()).get().getId());
         claims.setSubject(authResult.getName());
         claims.setExpiration(new Date(System.currentTimeMillis() + 1000*3600*24));
         String token = Jwts.builder()

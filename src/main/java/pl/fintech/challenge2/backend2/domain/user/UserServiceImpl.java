@@ -11,6 +11,7 @@ import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -64,5 +65,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User changeEmail(Long id, ChangeEmailDTO changeEmailDTO) {
         return null;
+    }
+
+    @Override
+    public Optional<User> findByEmail(String name) {
+        return userRepository.findByEmail(name);
     }
 }
