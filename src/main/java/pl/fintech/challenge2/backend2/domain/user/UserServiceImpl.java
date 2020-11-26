@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
 import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
-import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -23,8 +21,6 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final BankAppClient bankAppClient;
-
     @Override
     public User saveUser(User user) {
         try{
@@ -36,8 +32,6 @@ public class UserServiceImpl implements UserService {
                         .save(new Role(role.getName()))));
             }
             user.setRoles(roles);
-            user.setAccountNumber(bankAppClient
-                    .createAccount(user.getEmail()));
             return userRepository.save(user);
         }catch (Exception e){
             throw new UsernameAlreadyExistsException("Username '"+user.getUsername()+"' already exists");
@@ -50,23 +44,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void removeById(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    @Transactional
-    public User changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
-        return null;
+    public User changeEmail(Long id, ChangeEmailDTO changeEmailDTO) {
+        User user = findById(id);
+        if(bCryptPasswordEncoder.matches(changeEmailDTO.getPassword(), user.getPassword())){
+            user.setEmail(changeEmailDTO.getNewEmail());
+        }
+        return userRepository.save(user);
     }
 
     @Override
-    @Transactional
-    public User changeEmail(Long id, ChangeEmailDTO changeEmailDTO) {
-        return null;
+    public User changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
+        User user = findById(id);
+        if(bCryptPasswordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())){
+            user.setPassword(bCryptPasswordEncoder.encode(changePasswordDTO.getNewPassword()));
+        }
+        return userRepository.save(user);
     }
-
     @Override
     public Optional<User> findByEmail(String name) {
         return userRepository.findByEmail(name);

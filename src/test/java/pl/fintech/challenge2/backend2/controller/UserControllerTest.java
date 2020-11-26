@@ -17,10 +17,8 @@ import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
 import pl.fintech.challenge2.backend2.controller.dto.RegistrationDTO;
 import pl.fintech.challenge2.backend2.domain.user.Role;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -72,8 +70,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("El-Me-dżel"))
                 .andExpect(jsonPath("$.surname").value("Cień"))
                 .andExpect(jsonPath("$.phone").value("123456789"));
-                //todo: make it pass, I dont have time to learn how to shell value out of json
-                //  do it cause demo is on Friday
+        //todo: make it pass, I dont have time to learn how to shell value out of json
+        //  do it cause demo is on Friday
 //                .andExpect(jsonPath("$.roles").value("{id=1, name=BORROWER, authority=BORROWER}"));
     }
 
