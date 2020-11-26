@@ -1,18 +1,25 @@
 package pl.fintech.challenge2.backend2.domain.offer
 
 import org.springframework.web.client.HttpClientErrorException
+import pl.fintech.challenge2.backend2.domain.bank.Account
+import pl.fintech.challenge2.backend2.domain.bank.BankAppClient
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry
+import pl.fintech.challenge2.backend2.domain.user.User
 import spock.lang.Specification
 
 class OfferServiceImplTest extends Specification {
 
     def offerRepository = Mock(OfferRepository)
-    def offerService = new OfferServiceImpl(offerRepository)
+    def bankService = Mock(BankAppClient)
+    def offerService = new OfferServiceImpl(offerRepository, bankService)
 
     def "Save method should save and return an offer"() {
         given:
         def offer = createOffer(1)
         offerRepository.save(offer) >> offer
+        def account = new Account()
+        account.setAccountBalance(BigDecimal.valueOf(101))
+        bankService.getAccountInfo("123") >> account
         when:
         offer = offerService.create(offer)
         then:
@@ -68,6 +75,7 @@ class OfferServiceImplTest extends Specification {
         return Offer.builder()
                 .id(factor)
                 .loanAmount(BigDecimal.valueOf(100 + factor))
+                .lender(User.builder().accountNumber("123").build())
                 .annualInterestRate(99-factor).build()
     }
 
