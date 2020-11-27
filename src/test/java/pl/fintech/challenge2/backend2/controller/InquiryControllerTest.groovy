@@ -1,6 +1,7 @@
 package pl.fintech.challenge2.backend2.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -16,6 +17,7 @@ import pl.fintech.challenge2.backend2.domain.inquiry.InquiryService
 import pl.fintech.challenge2.backend2.domain.user.UserService
 import spock.lang.Specification
 import spock.mock.DetachedMockFactory
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.time.LocalDate
 
@@ -45,6 +47,8 @@ class InquiryControllerTest extends Specification {
 
     def "POST / should create an Inquiry and return status created"() {
         given:
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         def inquiryDTO = new InquiryDTO(BigDecimal.TEN, 5, LocalDate.of(2020,10,10), LocalDate.of(2020,9,9))
         def inquiry = createInquiry()
         when(inquiryMapper.mapInquiryDTOToInquiry(inquiryDTO)).thenReturn(inquiry)
