@@ -36,7 +36,7 @@ public class Scheduler {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 * * * ?")
     public void everyDayTask() {
         List<Inquiry> inquiries = inquiryService.findBySubmissionDeadLine(LocalDate.now());
         List<Offer> offers;
