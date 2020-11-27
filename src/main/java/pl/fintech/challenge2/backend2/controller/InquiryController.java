@@ -22,8 +22,8 @@ public class InquiryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody InquiryDTO inquiryDTO) {
-        inquiryService.create(inquiryMapper.mapInquiryDTOToInquiry(inquiryDTO));
+    public Inquiry create(@Valid @RequestBody InquiryDTO inquiryDTO) {
+        return inquiryService.create(inquiryMapper.mapInquiryDTOToInquiry(inquiryDTO));
     }
 
     @GetMapping

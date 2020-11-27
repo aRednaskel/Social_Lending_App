@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import pl.fintech.challenge2.backend2.domain.user.UserService;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -18,10 +19,13 @@ public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryRepository inquiryRepository;
 
+    private final UserService userService;
+
     @Override
     @Transactional
-    public void create(Inquiry inquiry) {
-        inquiryRepository.save(inquiry);
+    public Inquiry create(Inquiry inquiry) {
+        inquiry.setBorrower(userService.getCurrentUser());
+        return inquiryRepository.save(inquiry);
     }
 
     @Override

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface InquiryService {
 
-    void create(Inquiry inquiry);
+    Inquiry create(Inquiry inquiry);
     Inquiry findById(Long id);
     List<Inquiry> findAllByAmountAndLoanDuration(Integer minLoanDuration, Integer maxLoanDuration,
                                                  BigDecimal minAmount, BigDecimal maxAmount);
