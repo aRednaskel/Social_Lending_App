@@ -18,4 +18,6 @@ public interface UserService {
     Optional<User> findByEmail(String name);
 
     Long getCurrentUserId() throws UsernameNotFoundException;
+
+    User getCurrentUser() throws UsernameNotFoundException;
 }

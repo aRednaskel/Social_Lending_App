@@ -96,4 +96,19 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User wasn't found during getting his id");
         }
     }
+
+    @Override
+    public User getCurrentUser() throws UsernameNotFoundException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String email;
+        if (principal instanceof UserDetails) {
+            email = ((UserDetails)principal).getUsername();
+        } else {
+            email = principal.toString();
+        }
+
+        User user = userRepository.findByEmail(email).orElse(null);
+        return user;
+    }
 }
