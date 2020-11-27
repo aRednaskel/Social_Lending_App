@@ -2,6 +2,9 @@ package pl.fintech.challenge2.backend2.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -69,8 +72,28 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.save(user);
     }
+
     @Override
     public Optional<User> findByEmail(String name) {
         return userRepository.findByEmail(name);
+    }
+
+    @Override
+    public Long getCurrentUserId() throws UsernameNotFoundException{
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String email;
+        if (principal instanceof UserDetails) {
+            email = ((UserDetails)principal).getUsername();
+        } else {
+            email = principal.toString();
+        }
+
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user != null){
+            return user.getId();
+        }else{
+            throw new UsernameNotFoundException("User wasn't found during getting his id");
+        }
     }
 }
