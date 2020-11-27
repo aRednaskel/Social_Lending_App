@@ -49,9 +49,6 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @ManyToMany(targetEntity = Inquiry.class, fetch = FetchType.LAZY)
-    private List<Inquiry> inquiries;
-
     @OneToMany(targetEntity = Loan.class, fetch = FetchType.LAZY)
     private List<Loan> loans;
 

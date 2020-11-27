@@ -2,11 +2,15 @@ package pl.fintech.challenge2.backend2.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
 import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
+import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -21,6 +25,8 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final BankAppClient bankAppClient;
+
     @Override
     public User saveUser(User user) {
         try{
@@ -32,6 +38,7 @@ public class UserServiceImpl implements UserService {
                         .save(new Role(role.getName()))));
             }
             user.setRoles(roles);
+            user.setAccountNumber(bankAppClient.createAccount(user.getEmail()));
             return userRepository.save(user);
         }catch (Exception e){
             throw new UsernameAlreadyExistsException("Username '"+user.getUsername()+"' already exists");
@@ -65,8 +72,43 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.save(user);
     }
+
     @Override
     public Optional<User> findByEmail(String name) {
         return userRepository.findByEmail(name);
+    }
+
+    @Override
+    public Long getCurrentUserId() throws UsernameNotFoundException{
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String email;
+        if (principal instanceof UserDetails) {
+            email = ((UserDetails)principal).getUsername();
+        } else {
+            email = principal.toString();
+        }
+
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user != null){
+            return user.getId();
+        }else{
+            throw new UsernameNotFoundException("User wasn't found during getting his id");
+        }
+    }
+
+    @Override
+    public User getCurrentUser() throws UsernameNotFoundException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String email;
+        if (principal instanceof UserDetails) {
+            email = ((UserDetails)principal).getUsername();
+        } else {
+            email = principal.toString();
+        }
+
+        User user = userRepository.findByEmail(email).orElse(null);
+        return user;
     }
 }
