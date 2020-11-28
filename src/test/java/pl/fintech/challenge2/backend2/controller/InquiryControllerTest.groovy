@@ -1,8 +1,8 @@
 package pl.fintech.challenge2.backend2.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -14,8 +14,10 @@ import pl.fintech.challenge2.backend2.controller.dto.InquiryDTO
 import pl.fintech.challenge2.backend2.controller.mapper.InquiryMapper
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry
 import pl.fintech.challenge2.backend2.domain.inquiry.InquiryService
+import pl.fintech.challenge2.backend2.domain.user.UserService
 import spock.lang.Specification
 import spock.mock.DetachedMockFactory
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.time.LocalDate
 
@@ -38,11 +40,16 @@ class InquiryControllerTest extends Specification {
     @MockBean
     InquiryMapper inquiryMapper
 
+    @MockBean
+    UserService userService;
+
     def objectMapper = new ObjectMapper()
 
     def "POST / should create an Inquiry and return status created"() {
         given:
-        def inquiryDTO = new InquiryDTO(BigDecimal.TEN, 5, null)
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        def inquiryDTO = new InquiryDTO(BigDecimal.TEN, 5, LocalDate.of(2020,10,10), LocalDate.of(2020,9,9))
         def inquiry = createInquiry()
         when(inquiryMapper.mapInquiryDTOToInquiry(inquiryDTO)).thenReturn(inquiry)
 
@@ -56,7 +63,7 @@ class InquiryControllerTest extends Specification {
 
     def "GET "() {
         given:
-        when(inquiryService.findAllByLoanDurationAndAmount(4,6,9,11))
+        when(inquiryService.findAllByAmountAndLoanDuration(4,6,BigDecimal.valueOf(9),BigDecimal.valueOf(11)))
                 .thenReturn(List.of(createInquiry()))
         expect:
         def result = mvc.perform(get(new URI("/api/inquiries"))

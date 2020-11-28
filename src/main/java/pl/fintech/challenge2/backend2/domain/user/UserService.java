@@ -1,7 +1,10 @@
 package pl.fintech.challenge2.backend2.domain.user;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
 import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
+
+import java.util.Optional;
 
 public interface UserService {
     User saveUser(User user);
@@ -11,4 +14,10 @@ public interface UserService {
     User changePassword(Long id, ChangePasswordDTO changePasswordDTO);
 
     User changeEmail(Long id, ChangeEmailDTO changeEmailDTO);
+
+    Optional<User> findByEmail(String name);
+
+    Long getCurrentUserId() throws UsernameNotFoundException;
+
+    User getCurrentUser() throws UsernameNotFoundException;
 }

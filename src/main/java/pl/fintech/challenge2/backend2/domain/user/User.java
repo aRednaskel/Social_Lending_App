@@ -41,14 +41,13 @@ public class User implements UserDetails {
 
     private String phone;
 
+    private String accountNumber;
+
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
-    @ManyToMany(targetEntity = Inquiry.class, fetch = FetchType.LAZY)
-    private List<Inquiry> inquiries;
 
     @OneToMany(targetEntity = Loan.class, fetch = FetchType.LAZY)
     private List<Loan> loans;

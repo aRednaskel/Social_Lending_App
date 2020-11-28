@@ -8,7 +8,9 @@ import java.time.LocalDate;
 @Value
 public class InquiryDTO {
 
+
     BigDecimal loanAmount;
     Integer loanDuration;
     LocalDate submissionDeadline;
+    LocalDate createdAt;
 }
