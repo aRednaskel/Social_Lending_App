@@ -1,10 +1,10 @@
 package pl.fintech.challenge2.backend2.domain.offer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.fintech.challenge2.backend2.domain.Status;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.domain.user.User;
 
@@ -29,10 +29,10 @@ public class Offer {
     private Inquiry inquiry;
 
     private BigDecimal loanAmount;
+    private BigDecimal loanAmountGiven;
 
     private double annualInterestRate;
 
-    @JsonIgnore
-    private OfferStatus offerStatus;
+    private Status status;
 
 }

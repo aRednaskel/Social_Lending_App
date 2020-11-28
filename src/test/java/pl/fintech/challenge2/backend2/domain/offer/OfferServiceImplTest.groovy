@@ -63,10 +63,10 @@ class OfferServiceImplTest extends Specification {
         def offers = offerService.getBestOffersForInquiry(inquiry)
         def sum = BigDecimal.ZERO
         for(offer in offers) {
-            sum += offer.getLoanAmount()
+            sum += offer.getLoanAmountGiven()
         }
         then:
-        assert sum >= 300
+        assert sum == 300
         assert offers.get(0).getAnnualInterestRate() <= offers.get(1).getAnnualInterestRate()
 
     }
