@@ -48,8 +48,9 @@ class BankAppClientImplTest extends Specification {
         when:
         def amount1 = bankAppClient.getAccountInfo(user1.getAccountNumber()).getAccountBalance()
         def amount2 = bankAppClient.getAccountInfo(user2.getAccountNumber()).getAccountBalance()
-        bankAppClient.createInternalTransaction(user1, user2, BigDecimal.valueOf(100))
+        def done = bankAppClient.createInternalTransaction(user1, user2, BigDecimal.valueOf(100))
         then:
+        done == true
         assert (amount1 - 100) == bankAppClient.getAccountInfo(user1.getAccountNumber()).getAccountBalance()
         assert (amount2 + 100) == bankAppClient.getAccountInfo(user2.getAccountNumber()).getAccountBalance()
         where:

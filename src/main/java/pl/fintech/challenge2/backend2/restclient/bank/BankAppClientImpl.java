@@ -1,10 +1,7 @@
 package pl.fintech.challenge2.backend2.restclient.bank;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.fintech.challenge2.backend2.domain.user.User;
@@ -48,13 +45,13 @@ public class BankAppClientImpl implements BankAppClient{
     }
 
     @Override
-    public void createInternalTransaction(User sender, User receiver, BigDecimal value) {
+    public boolean createInternalTransaction(User sender, User receiver, BigDecimal value) {
         HttpEntity<InternalTransactionDTO> request = new HttpEntity<>(
                 new InternalTransactionDTO(sender.getAccountNumber(),receiver.getAccountNumber(), value),headers);
         ResponseEntity<String> getData = restTemplate.exchange(
                 bankUrl + "transactions/",
                 HttpMethod.POST, request, String.class);
-        getData.getHeaders();
+        return getData.getStatusCode() == HttpStatus.CREATED;
     }
 
     @Override

@@ -10,7 +10,7 @@ public interface BankAppClient {
 
      Account getAccountInfo(String accountNumber);
 
-     void createInternalTransaction(User sender, User receiver, BigDecimal value);
+     boolean createInternalTransaction(User sender, User receiver, BigDecimal value);
 
      void createExternalPayment(User user, BigDecimal value);
 

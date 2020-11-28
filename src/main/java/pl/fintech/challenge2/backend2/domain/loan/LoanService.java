@@ -6,7 +6,8 @@ public interface LoanService {
 
     Loan create(Loan loan);
 
-    List<Loan> getAll();
+    List<Loan> updateLoans();
 
+    Loan payBackInstallment(Loan loan);
 
 }

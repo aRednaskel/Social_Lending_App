@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import pl.fintech.challenge2.backend2.domain.Status;
-import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient;
 

@@ -22,8 +22,26 @@ class LoanServiceImpl implements LoanService{
     }
 
     @Override
-    public List<Loan> getAll() {
-        return loanRepository.findAll();
+    @Transactional
+    public List<Loan> updateLoans() {
+        List<Loan> loans = loanRepository.findByLoanAmountIsGreaterThan(BigDecimal.ZERO);
+        BigDecimal monthlyInterestRate;
+        for (Loan loan : loans) {
+            monthlyInterestRate = BigDecimal.valueOf(1 + loan.getAnnualInterestRate() / 100 / 12);
+            loan.setLoanAmount(
+                    loan.getLoanAmount()
+                            .multiply(monthlyInterestRate));
+        }
+        return loans;
+    }
+
+    @Override
+    @Transactional
+    public Loan payBackInstallment(Loan loan) {
+        loan.setLoanAmount(
+                loan.getLoanAmount()
+                        .subtract(loan.getMonthlyInstallment()));
+        return loan;
     }
 
     private BigDecimal calculateMonthlyInstallment(BigDecimal amount, double annualInterestRate, int duration) {
