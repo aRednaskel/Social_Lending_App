@@ -17,7 +17,6 @@ import pl.fintech.challenge2.backend2.domain.loan.Loan
 import pl.fintech.challenge2.backend2.domain.loan.LoanService
 import pl.fintech.challenge2.backend2.domain.offer.Offer
 import pl.fintech.challenge2.backend2.domain.offer.OfferService
-import pl.fintech.challenge2.backend2.domain.offer.PaymentFrequency
 import pl.fintech.challenge2.backend2.domain.user.User
 import pl.fintech.challenge2.backend2.domain.user.UserService
 import spock.lang.Specification
@@ -49,7 +48,7 @@ class OfferControllerTest extends Specification {
 
     def "POST / should create an Offer and return status created"() {
         given:
-        def offerDTO = new OfferDTO(1,1,BigDecimal.TEN,5, PaymentFrequency.ONCE)
+        def offerDTO = new OfferDTO(1,1,BigDecimal.TEN,5)
         def offer = createOffer()
         def user = createUser(1)
         when(userService.findById(1)).thenReturn(user)
@@ -87,8 +86,7 @@ class OfferControllerTest extends Specification {
         return Offer.builder()
                 .id(1l)
                 .loanAmount(BigDecimal.TEN)
-                .annualInterestRate(5d)
-                .paymentFrequency(PaymentFrequency.MONTHLY).build()
+                .annualInterestRate(5d).build()
     }
 
     Inquiry createInquiry() {
@@ -116,7 +114,6 @@ class OfferControllerTest extends Specification {
                     .loanAmount(BigDecimal.TEN)
                     .loanDuration(5)
                     .annualInterestRate(5)
-                    .paymentFrequency(PaymentFrequency.MONTHLY)
                     .createdAt(LocalDate.now()).build()
     }
 

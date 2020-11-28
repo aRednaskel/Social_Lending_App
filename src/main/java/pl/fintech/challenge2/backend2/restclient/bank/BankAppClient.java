@@ -1,4 +1,4 @@
-package pl.fintech.challenge2.backend2.domain.bank;
+package pl.fintech.challenge2.backend2.restclient.bank;
 
 import pl.fintech.challenge2.backend2.domain.user.User;
 

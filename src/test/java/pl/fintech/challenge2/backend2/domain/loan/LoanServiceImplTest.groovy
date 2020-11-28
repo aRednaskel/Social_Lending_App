@@ -1,6 +1,6 @@
 package pl.fintech.challenge2.backend2.domain.loan
 
-import pl.fintech.challenge2.backend2.domain.offer.PaymentFrequency
+
 import pl.fintech.challenge2.backend2.domain.user.User
 import spock.lang.Specification
 
@@ -20,7 +20,6 @@ class LoanServiceImplTest extends Specification {
         then:
         loan.getLoanAmount() == BigDecimal.TEN
         loan.getAnnualInterestRate() == 5
-        loan.getPaymentFrequency() == PaymentFrequency.MONTHLY
         loan.getCreatedAt() == LocalDate.now()
     }
 
@@ -29,8 +28,8 @@ class LoanServiceImplTest extends Specification {
             .lender(new User())
             .borrower(new User())
             .loanAmount(BigDecimal.TEN)
+            .loanDuration(10)
             .annualInterestRate(5d)
-            .paymentFrequency(PaymentFrequency.MONTHLY)
             .createdAt(LocalDate.now()).build()
     }
 }

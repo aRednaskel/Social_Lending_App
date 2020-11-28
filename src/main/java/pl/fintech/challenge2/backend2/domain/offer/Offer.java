@@ -32,9 +32,6 @@ public class Offer {
 
     private double annualInterestRate;
 
-    @Enumerated(value = EnumType.STRING)
-    private PaymentFrequency paymentFrequency;
-
     @JsonIgnore
     private OfferStatus offerStatus;
 

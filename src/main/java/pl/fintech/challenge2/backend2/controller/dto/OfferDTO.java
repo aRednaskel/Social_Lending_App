@@ -1,7 +1,6 @@
 package pl.fintech.challenge2.backend2.controller.dto;
 
 import lombok.Value;
-import pl.fintech.challenge2.backend2.domain.offer.PaymentFrequency;
 
 import java.math.BigDecimal;
 
@@ -12,5 +11,4 @@ public class OfferDTO {
     Long inquiryId;
     BigDecimal proposedAmount;
     Double annualInterestRate;
-    PaymentFrequency paymentFrequency;
 }

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
+import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ class OfferServiceImpl implements OfferService {
     @Transactional
     public Offer create(Offer offer) {
         if (offer == null)
-            throw new HttpClientErrorException(HttpStatus.NO_CONTENT);
+            throw new IllegalArgumentException();
         BigDecimal balance = bankAppClient.getAccountInfo(
                 offer.getLender().getAccountNumber())
                 .getAccountBalance();
@@ -42,9 +42,9 @@ class OfferServiceImpl implements OfferService {
 
     @Override
     public List<Offer> getBestOffersForInquiry(Inquiry inquiry) {
-        List<Offer> offers = offerRepository.findAllByInquiry(inquiry);
-        offers.sort(Comparator.comparing(Offer::getAnnualInterestRate));
         if (inquiry != null && inquiry.getLoanAmount().compareTo(BigDecimal.ZERO) > 0) {
+            List<Offer> offers = offerRepository.findAllByInquiry(inquiry);
+            offers.sort(Comparator.comparing(Offer::getAnnualInterestRate));
             return getBestOffersThatWillCoverInquiryAmountAndChangeStatusForRejectedOffers(inquiry.getLoanAmount(), offers);
         }
         throw new HttpClientErrorException(HttpStatus.NOT_FOUND);

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
+import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.domain.inquiry.InquiryService;
 import pl.fintech.challenge2.backend2.domain.loan.Loan;

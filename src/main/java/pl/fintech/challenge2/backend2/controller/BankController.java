@@ -3,7 +3,7 @@ package pl.fintech.challenge2.backend2.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
+import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient;
 import pl.fintech.challenge2.backend2.domain.user.User;
 import pl.fintech.challenge2.backend2.domain.user.UserService;
 

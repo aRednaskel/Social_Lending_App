@@ -34,9 +34,9 @@ public class OfferController {
                 inquiryService.findById(offerDTO.getInquiryId())));
     }
 
-    @PostMapping("/accept")
+    @PostMapping("/accept/{offerId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void acceptOffer(@RequestParam Long offerId, @RequestParam Long inquiryId){
+    public void acceptOffer(@PathVariable Long offerId, @RequestParam Long inquiryId){
         Offer offer = offerService.findById(offerId);
         Inquiry inquiry = inquiryService.findById(inquiryId);
         loanService.create(offerMapper.mapOfferAndInquiryToLoan(offer, inquiry));

@@ -1,8 +1,8 @@
 package pl.fintech.challenge2.backend2.domain.offer
 
 import org.springframework.web.client.HttpClientErrorException
-import pl.fintech.challenge2.backend2.domain.bank.Account
-import pl.fintech.challenge2.backend2.domain.bank.BankAppClient
+import pl.fintech.challenge2.backend2.restclient.bank.Account
+import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry
 import pl.fintech.challenge2.backend2.domain.user.User
 import spock.lang.Specification

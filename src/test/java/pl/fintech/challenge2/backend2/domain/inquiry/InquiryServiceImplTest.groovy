@@ -2,6 +2,7 @@ package pl.fintech.challenge2.backend2.domain.inquiry
 
 
 import org.springframework.web.client.HttpClientErrorException
+import pl.fintech.challenge2.backend2.domain.user.UserService
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -9,7 +10,8 @@ import java.time.LocalDate
 class InquiryServiceImplTest extends Specification {
 
     def inquiryRepository = Mock(InquiryRepository)
-    def inquiryService = new InquiryServiceImpl(inquiryRepository)
+    def userService = Mock(UserService)
+    def inquiryService = new InquiryServiceImpl(inquiryRepository, userService)
 
     def "Save method should save an inquiry"() {
         given:

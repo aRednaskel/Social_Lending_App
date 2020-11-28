@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.fintech.challenge2.backend2.domain.offer.PaymentFrequency;
 import pl.fintech.challenge2.backend2.domain.user.User;
 
 import javax.persistence.*;
@@ -32,7 +31,6 @@ public class Loan {
     private BigDecimal loanAmount;
     private Integer loanDuration;
     private Double annualInterestRate;
-    private PaymentFrequency paymentFrequency;
     private LocalDate createdAt;
 
     @JsonIgnore

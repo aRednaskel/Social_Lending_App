@@ -27,7 +27,7 @@ class LoanServiceImpl implements LoanService{
     }
 
     private BigDecimal calculateMonthlyInstallment(BigDecimal amount, double annualInterestRate, int duration) {
-        double monthlyInterestRate = 1 + annualInterestRate / 12;
+        double monthlyInterestRate = 1 + annualInterestRate / 100 / 12;
         return amount
                 .multiply(BigDecimal.valueOf(Math.pow(monthlyInterestRate, duration) * (monthlyInterestRate - 1) / (Math.pow(monthlyInterestRate, duration) - 1)));
     }

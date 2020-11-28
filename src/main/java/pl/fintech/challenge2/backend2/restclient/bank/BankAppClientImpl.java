@@ -1,4 +1,4 @@
-package pl.fintech.challenge2.backend2.domain.bank;
+package pl.fintech.challenge2.backend2.restclient.bank;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import pl.fintech.challenge2.backend2.domain.bank.BankAppClient
+import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient
 import pl.fintech.challenge2.backend2.domain.user.User
 import pl.fintech.challenge2.backend2.domain.user.UserService
 import spock.lang.Specification
