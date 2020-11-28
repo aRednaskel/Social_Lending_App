@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import pl.fintech.challenge2.backend2.domain.bank.BankAppClient;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.domain.inquiry.InquiryService;
 import pl.fintech.challenge2.backend2.domain.loan.Loan;
@@ -23,8 +24,9 @@ public class Scheduler {
     private final LoanService loanService;
     private final OfferService offerService;
     private final InquiryService inquiryService;
+    private final BankAppClient bankAppClient;
 
-    @Scheduled(cron = "0 0 0 1 * ?")
+    @Scheduled(cron = "${scheduler.monthly.update}")
     public void updateLoanAmount() {
         List<Loan> loans = loanService.getAll();
         BigDecimal monthlyInterestRate;
@@ -33,10 +35,12 @@ public class Scheduler {
             loan.setLoanAmount(
                     loan.getLoanAmount()
                             .multiply(monthlyInterestRate));
+            bankAppClient.createInternalTransaction(loan.getBorrower(), loan.getLender(), loan.getMonthlyInstallment());
         }
+
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "${scheduler.daily.update}")
     public void everyDayTask() {
         List<Inquiry> inquiries = inquiryService.findBySubmissionDeadLine(LocalDate.now());
         List<Offer> offers;

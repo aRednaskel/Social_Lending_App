@@ -1,14 +1,23 @@
 package pl.fintech.challenge2.backend2.domain.bank
 
+import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor
 import org.springframework.web.client.RestTemplate
 import pl.fintech.challenge2.backend2.domain.user.User
 import spock.lang.Specification
 import spock.lang.Unroll
 
+@RequiredArgsConstructor
 class BankAppClientImplTest extends Specification {
 
     def restTemplate = new RestTemplate()
-    def bankAppClient = new BankAppClientImpl(restTemplate)
+    @Value('${bank.url.host}')
+    String bankUrl
+    @Value('${bank.user}')
+    String user
+    @Value('${bank.password}')
+    String password
+    def bankAppClient = new BankAppClientImpl(bankUrl, user, password, restTemplate)
 
     def "CreateAccount"() {
         when:

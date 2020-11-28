@@ -7,4 +7,6 @@ public interface LoanService {
     Loan create(Loan loan);
 
     List<Loan> getAll();
+
+
 }

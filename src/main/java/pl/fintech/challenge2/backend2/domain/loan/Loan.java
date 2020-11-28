@@ -1,5 +1,6 @@
 package pl.fintech.challenge2.backend2.domain.loan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,4 +34,7 @@ public class Loan {
     private Double annualInterestRate;
     private PaymentFrequency paymentFrequency;
     private LocalDate createdAt;
+
+    @JsonIgnore
+    private BigDecimal monthlyInstallment;
 }

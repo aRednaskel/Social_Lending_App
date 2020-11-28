@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -15,11 +16,19 @@ class LoanServiceImpl implements LoanService{
     @Override
     @Transactional
     public Loan create(Loan loan) {
+        loan.setMonthlyInstallment(
+                calculateMonthlyInstallment(loan.getLoanAmount(), loan.getAnnualInterestRate(), loan.getLoanDuration()));
         return loanRepository.save(loan);
     }
 
     @Override
     public List<Loan> getAll() {
         return loanRepository.findAll();
+    }
+
+    private BigDecimal calculateMonthlyInstallment(BigDecimal amount, double annualInterestRate, int duration) {
+        double monthlyInterestRate = 1 + annualInterestRate / 12;
+        return amount
+                .multiply(BigDecimal.valueOf(Math.pow(monthlyInterestRate, duration) * (monthlyInterestRate - 1) / (Math.pow(monthlyInterestRate, duration) - 1)));
     }
 }

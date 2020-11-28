@@ -16,12 +16,12 @@ class LoanServiceImplTest extends Specification {
         def loan = createLoan()
         loanRepository.save(loan) >> loan
         when:
-        loan =loanService.create(loan)
+        loan = loanService.create(loan)
         then:
-        assert loan.getLoanAmount() == BigDecimal.TEN
-        assert loan.getAnnualInterestRate() == 5
-        assert loan.getPaymentFrequency() == PaymentFrequency.MONTHLY
-        assert loan.getCreatedAt() == LocalDate.now()
+        loan.getLoanAmount() == BigDecimal.TEN
+        loan.getAnnualInterestRate() == 5
+        loan.getPaymentFrequency() == PaymentFrequency.MONTHLY
+        loan.getCreatedAt() == LocalDate.now()
     }
 
     Loan createLoan() {

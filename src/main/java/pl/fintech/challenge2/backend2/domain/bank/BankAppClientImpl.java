@@ -1,6 +1,6 @@
 package pl.fintech.challenge2.backend2.domain.bank;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,65 +12,65 @@ import pl.fintech.challenge2.backend2.domain.user.User;
 import java.math.BigDecimal;
 
 @Service
-@RequiredArgsConstructor
 public class BankAppClientImpl implements BankAppClient{
 
+    private final String bankUrl;
+    private final HttpHeaders headers;
     private final RestTemplate restTemplate;
+
+
+    public BankAppClientImpl(@Value("${bank.url.host}") String bankUrl, @Value("${bank.user}") String user,
+                             @Value("${bank.password}") String password, RestTemplate restTemplate) {
+        this.bankUrl = bankUrl;
+        this.restTemplate = restTemplate;
+        this.headers = new HttpHeaders();
+        this.headers.setBasicAuth(user, password);
+    }
 
     @Override
     public String createAccount(String email) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("example", "example");
         HttpEntity<AccountDTO> request = new HttpEntity<>(new AccountDTO(email), headers);
         ResponseEntity<String> getData = restTemplate.exchange(
-                "https://hltechbank.thebe-team.sit.fintechchallenge.pl/accounts",
+                bankUrl +  "accounts",
                 HttpMethod.POST, request, String.class);
         return getData.getHeaders()
                 .get("Location").get(0)
-                .replace("https://hltechbank.thebe-team.sit.fintechchallenge.pl/accounts/", "");
+                .replace(bankUrl + "accounts/", "");
     }
 
     @Override
     public Account getAccountInfo(String accountNumber) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("example", "example");
         HttpEntity<String> request = new HttpEntity<>(headers);
         ResponseEntity<Account> getData = restTemplate.exchange(
-                "https://hltechbank.thebe-team.sit.fintechchallenge.pl/accounts/" + accountNumber,
+                bankUrl + "accounts/" + accountNumber,
                 HttpMethod.GET, request, Account.class);
         return getData.getBody();
     }
 
     @Override
     public void createInternalTransaction(User sender, User receiver, BigDecimal value) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("example", "example");
         HttpEntity<InternalTransactionDTO> request = new HttpEntity<>(
                 new InternalTransactionDTO(sender.getAccountNumber(),receiver.getAccountNumber(), value),headers);
         ResponseEntity<String> getData = restTemplate.exchange(
-                "https://hltechbank.thebe-team.sit.fintechchallenge.pl/transactions/",
+                bankUrl + "transactions/",
                 HttpMethod.POST, request, String.class);
         getData.getHeaders();
     }
 
     @Override
     public void createExternalPayment(User user, BigDecimal value) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("example", "example");
         HttpEntity<ExternalTransactionDto> request = new HttpEntity<>(
                 new ExternalTransactionDto(user.getAccountNumber(), value),headers);
         ResponseEntity<String> getData = restTemplate.exchange(
-                "https://hltechbank.thebe-team.sit.fintechchallenge.pl/payments/",
+                bankUrl + "payments/",
                 HttpMethod.POST, request, String.class);
     }
 
     public void createExternalWithdrawal(User user, BigDecimal value){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("example", "example");
         HttpEntity<ExternalTransactionDto> request = new HttpEntity<>(
                 new ExternalTransactionDto(user.getAccountNumber(), value),headers);
         ResponseEntity<String> getData = restTemplate.exchange(
-                "https://hltechbank.thebe-team.sit.fintechchallenge.pl/withdrawals/",
+                bankUrl + "withdrawals/",
                 HttpMethod.POST, request, String.class);
     }
 }
