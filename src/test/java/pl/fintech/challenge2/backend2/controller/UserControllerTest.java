@@ -37,20 +37,6 @@ public class UserControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-//    @Test
-//    public void shouldStatusBe201WhenBasicRegistration() throws Exception {
-//        RegistrationDTO registrationDTO = new RegistrationDTO();
-//        registrationDTO.setEmail("people.defender@email.com");
-//        registrationDTO.setPassword("wisnia");
-//        mockMvc.perform(post("/api/users/register")
-//                .content(objectMapper.writeValueAsString(registrationDTO))
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is(201))
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.email").value("people.defender@email.com"))
-//                .andExpect(jsonPath("$.password").doesNotExist());
-//    }
-
     @Test
     public void shouldStatusBe201WhenAllFieldsFilled() throws Exception {
         RegistrationDTO registrationDTO = new RegistrationDTO();
@@ -70,9 +56,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("El-Me-dżel"))
                 .andExpect(jsonPath("$.surname").value("Cień"))
                 .andExpect(jsonPath("$.phone").value("123456789"));
-        //todo: make it pass, I dont have time to learn how to shell value out of json
-        //  do it cause demo is on Friday
-//                .andExpect(jsonPath("$.roles").value("{id=1, name=BORROWER, authority=BORROWER}"));
     }
 
     @Test
