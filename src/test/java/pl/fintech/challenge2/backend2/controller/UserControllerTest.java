@@ -92,10 +92,17 @@ public class UserControllerTest {
         String content = result.getResponse().getContentAsString();
         JsonNode jsonNode = objectMapper.readTree(content);
 
+        MvcResult loginResult = mockMvc.perform(post("/api/users/login")
+                .param("username", "bestprogrammer@email.com")
+                .param("password", "wisnia")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().is(200)).andReturn();
+
         ChangeEmailDTO changeEmailDTO = new ChangeEmailDTO();
         changeEmailDTO.setPassword("wisnia");
         changeEmailDTO.setNewEmail("wisnia2@o2.pl");
         mockMvc.perform(put("/api/users/" + jsonNode.get("id").toString() + "/change-email")
+                .header("X-Auth", loginResult.getResponse().getHeaderValue("X-Auth"))
                 .content(objectMapper.writeValueAsString(changeEmailDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
@@ -122,10 +129,17 @@ public class UserControllerTest {
         String content = result.getResponse().getContentAsString();
         JsonNode jsonNode = objectMapper.readTree(content);
 
+        MvcResult loginResult = mockMvc.perform(post("/api/users/login")
+                .param("username", "bestprogrammer@email.com")
+                .param("password", "wisnia")
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().is(200)).andReturn();
+
         ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
         changePasswordDTO.setOldPassword("wisnia");
         changePasswordDTO.setNewPassword("wisnia2");
         mockMvc.perform(put("/api/users/" + jsonNode.get("id").toString() + "/change-password")
+                .header("X-Auth", loginResult.getResponse().getHeaderValue("X-Auth"))
                 .content(objectMapper.writeValueAsString(changePasswordDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
