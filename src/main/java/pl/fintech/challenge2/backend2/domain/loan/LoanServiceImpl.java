@@ -16,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 class LoanServiceImpl implements LoanService{
 
     private final LoanRepository loanRepository;

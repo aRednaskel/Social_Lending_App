@@ -50,13 +50,32 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @OneToMany(targetEntity = Loan.class, fetch = FetchType.LAZY)
-    private List<Loan> loans;
+    @OneToMany(
+            mappedBy = "borrower",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Loan> borrowerLoans;
 
-    @ManyToMany(targetEntity = Offer.class, fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "lender",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Loan> lenderLoans;
+
+    @OneToMany(
+            mappedBy = "lender",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Offer> offers;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Message> messages;
 
     @JsonIgnore
