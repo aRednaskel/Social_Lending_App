@@ -32,8 +32,8 @@ public class UserController {
         return ResponseEntity.status(201).body(userService.saveUser(userMapper.mapRegistrationDTOToUser(userDTO)));
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
+    @PreAuthorize("@securityExpressions.hasPersonId(authentication,#id) or hasAuthority('ADMIN')")
     public ResponseEntity getUsersData(@PathVariable Long id) {
         log.info("GET /api/users/{}", id);
 
