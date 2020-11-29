@@ -34,4 +34,9 @@ public class Inquiry {
     private LocalDate createdAt;
 
     private Status status;
+
+    @Override
+    public String toString(){
+        return id + " " + loanAmount + " " + status;
+    }
 }
