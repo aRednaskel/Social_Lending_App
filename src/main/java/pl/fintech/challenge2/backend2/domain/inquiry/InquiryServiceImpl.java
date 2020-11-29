@@ -50,6 +50,6 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public List<Inquiry> findBySubmissionDeadLine(LocalDate submissionDeadline) {
         return inquiryRepository.findBySubmissionDeadline(submissionDeadline).stream()
-                .filter(e -> e.getStatus() == Status.CREATED).collect(Collectors.toList());
+                .filter(e -> e.getStatus().equals(Status.CREATED)).collect(Collectors.toList());
     }
 }

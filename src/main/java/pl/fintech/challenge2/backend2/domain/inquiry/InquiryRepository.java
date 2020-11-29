@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-interface InquiryRepository extends JpaRepository<Inquiry, Long> {
+public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
 
     List<Inquiry> findByLoanDurationBetweenAndLoanAmountBetween(
             Integer minLoanDuration, Integer maxLoanDuration,

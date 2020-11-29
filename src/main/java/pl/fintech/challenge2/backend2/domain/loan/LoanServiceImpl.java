@@ -2,9 +2,14 @@ package pl.fintech.challenge2.backend2.domain.loan;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.fintech.challenge2.backend2.domain.Status;
+import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
+import pl.fintech.challenge2.backend2.domain.message.Message;
+import pl.fintech.challenge2.backend2.domain.offer.Offer;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -12,6 +17,32 @@ import java.util.List;
 class LoanServiceImpl implements LoanService{
 
     private final LoanRepository loanRepository;
+
+    @Override
+    @Transactional
+    public List<Loan> createLoansFromOffers(List<Offer> offers, Inquiry inquiry){
+        List<Loan> loans = new ArrayList<>();
+        for(Offer offer : offers){
+            Loan loan = new Loan();
+            loan.setBorrower(inquiry.getBorrower());
+            loan.setLender(offer.getLender());
+            loan.setLoanAmount(offer.getLoanAmount());
+            loan.setLoanDuration(inquiry.getLoanDuration());
+            loan.setAnnualInterestRate(offer.getAnnualInterestRate());
+            loan.setMonthlyInstallment(
+                    calculateMonthlyInstallment(loan.getLoanAmount(), loan.getAnnualInterestRate(),
+                            loan.getLoanDuration()));
+            loan.setStatus(Status.ACCEPTED);
+
+//            offer.getLender().getMessages().add(new Message("Pożyczyłeś pieniądze użytkownikowi " +
+//                    inquiry.getBorrower().getEmail()));
+
+
+            loanRepository.save(loan);
+            loans.add(loan);
+        }
+        return loans;
+    }
 
     @Override
     @Transactional

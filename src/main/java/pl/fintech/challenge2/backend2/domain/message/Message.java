@@ -23,4 +23,8 @@ public class Message {
 
     @ManyToOne
     private User user;
+
+    public Message(String content) {
+        this.content = content;
+    }
 }

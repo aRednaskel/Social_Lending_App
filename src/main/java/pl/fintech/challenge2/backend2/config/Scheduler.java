@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import pl.fintech.challenge2.backend2.domain.Status;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
+import pl.fintech.challenge2.backend2.domain.inquiry.InquiryRepository;
 import pl.fintech.challenge2.backend2.domain.inquiry.InquiryService;
 import pl.fintech.challenge2.backend2.domain.loan.Loan;
 import pl.fintech.challenge2.backend2.domain.loan.LoanService;
@@ -24,6 +26,7 @@ public class Scheduler {
     private final OfferService offerService;
     private final InquiryService inquiryService;
     private final BankAppClient bankAppClient;
+    private final InquiryRepository inquiryRepository;
 
     @Scheduled(cron = "${scheduler.monthly.update}")
     public void updateLoanAmount() {
@@ -42,6 +45,9 @@ public class Scheduler {
         List<Offer> offers;
         for (Inquiry inquiry: inquiries) {
             offers = offerService.getBestOffersForInquiry(inquiry);
+            inquiry.setStatus(Status.PENDING);
+            inquiryRepository.save(inquiry);
+            loanService.createLoansFromOffers(offers, inquiry);
         }
     }
 }
