@@ -12,7 +12,7 @@ public interface BankAppClient {
 
      boolean createInternalTransaction(User sender, User receiver, BigDecimal value);
 
-     void createExternalPayment(User user, BigDecimal value);
+     boolean createExternalPayment(User user, BigDecimal value);
 
-     void createExternalWithdrawal(User user, BigDecimal value);
+     boolean createExternalWithdrawal(User user, BigDecimal value);
 }

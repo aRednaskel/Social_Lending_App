@@ -12,6 +12,7 @@ import pl.fintech.challenge2.backend2.controller.dto.ChangeEmailDTO;
 import pl.fintech.challenge2.backend2.controller.dto.ChangePasswordDTO;
 import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -46,8 +47,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        user.setMoneyAmount(bankAppClient.getAccountInfo(user.getAccountNumber()).getAccountBalance());
+        return user;
     }
 
     @Override

@@ -55,19 +55,21 @@ public class BankAppClientImpl implements BankAppClient{
     }
 
     @Override
-    public void createExternalPayment(User user, BigDecimal value) {
+    public boolean createExternalPayment(User user, BigDecimal value) {
         HttpEntity<ExternalTransactionDto> request = new HttpEntity<>(
                 new ExternalTransactionDto(user.getAccountNumber(), value),headers);
         ResponseEntity<String> getData = restTemplate.exchange(
                 bankUrl + "payments/",
                 HttpMethod.POST, request, String.class);
+        return getData.getStatusCode() == HttpStatus.CREATED;
     }
 
-    public void createExternalWithdrawal(User user, BigDecimal value){
+    public boolean createExternalWithdrawal(User user, BigDecimal value){
         HttpEntity<ExternalTransactionDto> request = new HttpEntity<>(
                 new ExternalTransactionDto(user.getAccountNumber(), value),headers);
         ResponseEntity<String> getData = restTemplate.exchange(
                 bankUrl + "withdrawals/",
                 HttpMethod.POST, request, String.class);
+        return getData.getStatusCode() == HttpStatus.CREATED;
     }
 }

@@ -3,6 +3,7 @@ package pl.fintech.challenge2.backend2.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import pl.fintech.challenge2.backend2.restclient.bank.BankAppClient;
 import pl.fintech.challenge2.backend2.domain.user.User;
 import pl.fintech.challenge2.backend2.domain.user.UserService;
@@ -29,13 +30,17 @@ public class BankController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createExternalPayment(@RequestParam Long userId, @RequestParam BigDecimal value){
         User user = userService.findById(userId);
-        bankAppClient.createExternalPayment(user,value);
+        if (!bankAppClient.createExternalPayment(user,value)) {
+            throw new HttpClientErrorException(HttpStatus.EXPECTATION_FAILED);
+        }
     };
 
     @PostMapping("/externalWithdrawal")
     @ResponseStatus(HttpStatus.CREATED)
     public void createExternalWithdrawal(@RequestParam Long userId, @RequestParam BigDecimal value){
         User user = userService.findById(userId);
-        bankAppClient.createExternalWithdrawal(user,value);
+        if (!bankAppClient.createExternalWithdrawal(user,value)) {
+            throw new HttpClientErrorException(HttpStatus.EXPECTATION_FAILED);
+        }
     };
 }
