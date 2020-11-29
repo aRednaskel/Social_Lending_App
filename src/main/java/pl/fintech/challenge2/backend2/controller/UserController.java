@@ -33,23 +33,22 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("@securityExpressions.hasPersonId(authentication,#id) or hasAuthority('ADMIN')")
     public ResponseEntity getUsersData(@PathVariable Long id) {
         log.info("GET /api/users/{}", id);
 
         return ResponseEntity.status(200).body(userService.findById(id));
     }
 
-    @PreAuthorize("permitAll()")
     @DeleteMapping("/{id}")
+    @PreAuthorize("@securityExpressions.hasPersonId(authentication,#id) or hasAuthority('ADMIN')")
     public void deleteUser(@PathVariable Long id) {
         log.info("DELETE /api/users/{}", id);
 
         userService.removeById(id);
     }
 
-    @PreAuthorize("permitAll()")
     @PutMapping("/{id}/change-email")
+    @PreAuthorize("@securityExpressions.hasPersonId(authentication,#id) or hasAuthority('ADMIN')")
     public ResponseEntity<User> changeUserEmail(@PathVariable Long id,
                                 @RequestBody ChangeEmailDTO changeEmailDTO) {
         log.info("PUT /api/users/{}/change-email", id);
@@ -57,8 +56,8 @@ public class UserController {
         return ResponseEntity.status(200).body(userService.changeEmail(id, changeEmailDTO));
     }
 
-    @PreAuthorize("permitAll()")
     @PutMapping("/{id}/change-password")
+    @PreAuthorize("@securityExpressions.hasPersonId(authentication,#id) or hasAuthority('ADMIN')")
     public ResponseEntity<User> changeUserPassword(@PathVariable Long id,
                                                    @RequestBody ChangePasswordDTO changePasswordDTO) {
         log.info("PUT /api/users/{}/change-password", id);
