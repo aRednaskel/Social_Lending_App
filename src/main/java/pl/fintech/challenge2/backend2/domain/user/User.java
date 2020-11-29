@@ -7,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.domain.loan.Loan;
 import pl.fintech.challenge2.backend2.domain.message.Message;
 import pl.fintech.challenge2.backend2.domain.offer.Offer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +43,8 @@ public class User implements UserDetails {
     private String phone;
 
     private String accountNumber;
+
+    private BigDecimal moneyAmount;
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
