@@ -24,8 +24,8 @@ public class UserController {
 
     private final UserMapper userMapper;
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/register")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<User> registerUser(@Valid @RequestBody RegistrationDTO userDTO){
         log.info("POST /api/users/register, registering user:{}", userDTO);
 
@@ -33,6 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("@securityExpressions.hasPersonId(authentication,#id) or hasAuthority('ADMIN')")
     public ResponseEntity getUsersData(@PathVariable Long id) {
         log.info("GET /api/users/{}", id);
 
