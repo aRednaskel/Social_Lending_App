@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.domain.loan.Loan;
+import pl.fintech.challenge2.backend2.domain.message.Message;
 import pl.fintech.challenge2.backend2.domain.offer.Offer;
 
 import javax.persistence.*;
@@ -54,6 +55,9 @@ public class User implements UserDetails {
 
     @ManyToMany(targetEntity = Offer.class, fetch = FetchType.LAZY)
     private List<Offer> offers;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Message> messages;
 
     @JsonIgnore
     @Override

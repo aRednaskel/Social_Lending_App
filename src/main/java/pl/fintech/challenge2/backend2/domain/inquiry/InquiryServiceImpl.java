@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import pl.fintech.challenge2.backend2.domain.Status;
 import pl.fintech.challenge2.backend2.domain.user.UserService;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class InquiryServiceImpl implements InquiryService {
     @Transactional
     public Inquiry create(Inquiry inquiry) {
         inquiry.setBorrower(userService.getCurrentUser());
+        inquiry.setStatus(Status.CREATED);
         return inquiryRepository.save(inquiry);
     }
 
@@ -46,6 +49,7 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public List<Inquiry> findBySubmissionDeadLine(LocalDate submissionDeadline) {
-        return inquiryRepository.findBySubmissionDeadline(submissionDeadline);
+        return inquiryRepository.findBySubmissionDeadline(submissionDeadline).stream()
+                .filter(e -> e.getStatus().equals(Status.CREATED)).collect(Collectors.toList());
     }
 }

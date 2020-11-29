@@ -32,9 +32,16 @@ public class Loan {
     private BigDecimal loanAmount;
     private Integer loanDuration;
     private Double annualInterestRate;
+
     private LocalDate createdAt;
 
     @JsonIgnore
     private BigDecimal monthlyInstallment;
     private Status status;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDate.now();
+    }
+
 }
