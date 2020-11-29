@@ -56,7 +56,7 @@ public class User implements UserDetails {
     @ManyToMany(targetEntity = Offer.class, fetch = FetchType.LAZY)
     private List<Offer> offers;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Message> messages;
 
     @JsonIgnore

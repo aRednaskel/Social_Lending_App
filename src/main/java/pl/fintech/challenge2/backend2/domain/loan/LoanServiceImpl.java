@@ -6,6 +6,8 @@ import pl.fintech.challenge2.backend2.domain.Status;
 import pl.fintech.challenge2.backend2.domain.inquiry.Inquiry;
 import pl.fintech.challenge2.backend2.domain.message.Message;
 import pl.fintech.challenge2.backend2.domain.offer.Offer;
+import pl.fintech.challenge2.backend2.domain.user.User;
+import pl.fintech.challenge2.backend2.domain.user.UserRepository;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -18,14 +20,19 @@ class LoanServiceImpl implements LoanService{
 
     private final LoanRepository loanRepository;
 
+    private final UserRepository userRepository;
+
     @Override
     @Transactional
     public List<Loan> createLoansFromOffers(List<Offer> offers, Inquiry inquiry){
         List<Loan> loans = new ArrayList<>();
         for(Offer offer : offers){
+            User lender = offer.getLender();
+            User borrower = inquiry.getBorrower();
+
             Loan loan = new Loan();
-            loan.setBorrower(inquiry.getBorrower());
-            loan.setLender(offer.getLender());
+            loan.setBorrower(borrower);
+            loan.setLender(lender);
             loan.setLoanAmount(offer.getLoanAmount());
             loan.setLoanDuration(inquiry.getLoanDuration());
             loan.setAnnualInterestRate(offer.getAnnualInterestRate());
@@ -34,9 +41,15 @@ class LoanServiceImpl implements LoanService{
                             loan.getLoanDuration()));
             loan.setStatus(Status.ACCEPTED);
 
-//            offer.getLender().getMessages().add(new Message("Pożyczyłeś pieniądze użytkownikowi " +
-//                    inquiry.getBorrower().getEmail()));
+            List<Message> lenderMessages = lender.getMessages();
+            lenderMessages.add(new Message("Pożyczyłeś pieniądze użytkownikowi"));
+            lender.setMessages(lenderMessages);
+            userRepository.save(lender);
 
+            List<Message> borrowerMessages = borrower.getMessages();
+            borrowerMessages.add(new Message("Otrzymałeś pieniądze z pożyczki"));
+            borrower.setMessages(borrowerMessages);
+            userRepository.save(borrower);
 
             loanRepository.save(loan);
             loans.add(loan);
